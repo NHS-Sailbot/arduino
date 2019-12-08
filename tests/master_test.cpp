@@ -1,6 +1,7 @@
-#include <template/template.hpp>
+#include <arduino/arduino.hpp>
 
 int main() {
-    if (add(2, 3) != 5) return -1;
+    auto ard = arduino::connect(115200, 0x5C);
+    if (!ard.is_open) return -1;
     return 0;
 }

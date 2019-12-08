@@ -1,3 +1,3 @@
-# C++ library template
+# C++ arduino library
 
-This repository outlines a template for a library to be written in C++, using the build system CMake. Further documentation can be found on [the wiki](https://github.com/GabeRundlett/cpp_lib/wiki)
+This repository standardizes communications between a host machine and an arduino, using [serial](https://github.com/NHS-Sailbot/serial). Further documentation can be found on [the wiki](https://github.com/GabeRundlett/arduino/wiki)
