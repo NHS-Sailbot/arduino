@@ -1,5 +1,4 @@
-set(sources core/arduino.cpp)
-
+link_libraries(serial)
 include_directories(${arduino_include_dir})
 include_directories(${serial_include_dir})
 include_directories(${debug_include_dir})
