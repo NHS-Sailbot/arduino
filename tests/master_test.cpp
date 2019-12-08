@@ -1,7 +1,10 @@
 #include <arduino/arduino.hpp>
 
 int main() {
-    auto ard = arduino::connect(115200, 0x5C);
-    if (!ard.is_open) return -1;
+    auto ard = arduino::connect(115200, 0xA5);
+    if (!ard.is_valid) {
+        //
+        return -1;
+    }
     return 0;
 }

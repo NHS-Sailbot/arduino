@@ -1,4 +1,7 @@
+#include <arduino/arduino.hpp>
 
-int add(const int a, const int b) {
-    return a + b;
-}
+namespace arduino {
+    Device connect(const unsigned int baud, const unsigned char key) {
+        //
+    }
+} // namespace arduino

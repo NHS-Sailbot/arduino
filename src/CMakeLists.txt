@@ -1,6 +1,8 @@
-set(sources core/add.cpp)
+set(sources core/arduino.cpp)
 
-include_directories(${template_include_dir})
+include_directories(${arduino_include_dir})
+include_directories(${serial_include_dir})
+include_directories(${debug_include_dir})
 
 if (WIN32)
     set(sources ${sources} plat/windows/windows_arduino.cpp)
