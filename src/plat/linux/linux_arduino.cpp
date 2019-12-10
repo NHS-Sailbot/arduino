@@ -5,11 +5,11 @@ namespace arduino {
     static void default_update(Device &) {}
 
     static bool open_device(Device &device, const char *const filepath, const unsigned int baud) {
+        DEBUG_BEGIN_FUNC_PROFILE;
         if (serial::open(device.serial_device, filepath, baud)) {
             debug::log::message("Attempting to shake hands with %s...", filepath);
 
             for (unsigned int i = 0; i < HANDSHAKE_ATTEMPTS; ++i) {
-                debug::timer::sleep(TICK_INTERVAL);
                 serial::write(device.serial_device, device.tdata_buffer, device.tsize);
                 debug::timer::sleep(TICK_INTERVAL);
                 serial::read(device.serial_device, device.rdata_buffer, device.rsize);
@@ -24,6 +24,7 @@ namespace arduino {
                     device.is_valid = true;
                     return true;
                 }
+                debug::timer::sleep(TICK_INTERVAL);
             }
             serial::close(device.serial_device);
         }
