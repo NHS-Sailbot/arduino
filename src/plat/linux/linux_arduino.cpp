@@ -6,6 +6,7 @@ namespace arduino {
 
     static bool open_device(Device &device, const char *const filepath, const unsigned int baud) {
         DEBUG_BEGIN_FUNC_PROFILE;
+
         if (serial::open(device.serial_device, filepath, baud)) {
             debug::log::message("Attempting to shake hands with %s...", filepath);
 
@@ -13,18 +14,18 @@ namespace arduino {
                 serial::write(device.serial_device, device.tdata_buffer, device.tsize);
                 debug::timer::sleep(TICK_INTERVAL);
                 serial::read(device.serial_device, device.rdata_buffer, device.rsize);
+                debug::timer::sleep(TICK_INTERVAL);
 
                 for (unsigned int i = 0; i < device.rsize; ++i)
                     debug::log::info("%0*x ", 2, device.rdata_buffer[i]);
                 debug::log::info(": %0*x\n", 2, device.key);
 
                 if (device.rdata_buffer[0] == device.key && device.rdata_buffer[device.rsize - 1] == device.key) {
-                    debug::log::success("Opened device %s at baudrate %d, using key %x.", filepath, baud, device.key);
+                    debug::log::success("Opened arduino '%s' at %d baud, using key '%x'.", filepath, baud, device.key);
                     device.tick_begin = debug::timer::now();
                     device.is_valid = true;
                     return true;
                 }
-                debug::timer::sleep(TICK_INTERVAL);
             }
             serial::close(device.serial_device);
         }

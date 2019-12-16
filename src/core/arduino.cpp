@@ -4,6 +4,8 @@
 namespace arduino {
 
     void disconnect(Device &device) {
+        DEBUG_BEGIN_FUNC_PROFILE;
+
         if (device.rdata_buffer) delete device.rdata_buffer;
         if (device.tdata_buffer) delete device.tdata_buffer;
         serial::close(device.serial_device);
