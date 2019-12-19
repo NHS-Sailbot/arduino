@@ -1,4 +1,7 @@
 #include <arduino/arduino.hpp>
+
+#define DEBUG_ENABLE_TIMING
+#define DEBUG_ENABLE_LOGGING
 #include <debug/debug.hpp>
 
 namespace arduino {
@@ -6,25 +9,25 @@ namespace arduino {
     void disconnect(Device &device) {
         DEBUG_BEGIN_FUNC_PROFILE;
 
-        if (device.rdata_buffer) delete device.rdata_buffer;
-        if (device.tdata_buffer) delete device.tdata_buffer;
-        serial::close(device.serial_device);
+        if (device._rdata_buffer) delete device._rdata_buffer;
+        if (device._tdata_buffer) delete device._tdata_buffer;
+        serial::close(device._serial_device);
     }
 
     void update(Device &device) {
         const double current_time = debug::timer::now();
-        if (current_time - device.tick_begin > TICK_INTERVAL) {
+        if (current_time - device._tick_begin > TICK_INTERVAL) {
             DEBUG_BEGIN_FUNC_PROFILE;
 
             switch (device.tick) {
             case 0:
-                serial::write(device.serial_device, device.tdata_buffer, device.tsize);
+                serial::write(device._serial_device, device._tdata_buffer, device.tsize);
                 device.tick = 1;
                 break;
             case 1:
-                serial::read(device.serial_device, device.rdata_buffer, device.rsize);
-                if (device.rdata_buffer[0] == device.key && device.rdata_buffer[device.rsize - 1] == device.key) {
-                    device.tick_begin = debug::timer::now();
+                serial::read(device._serial_device, device._rdata_buffer, device.rsize);
+                if (device._rdata_buffer[0] == device.key && device._rdata_buffer[device.rsize - 1] == device.key) {
+                    device._tick_begin = debug::timer::now();
                     device.is_valid = true;
                 } else {
                     debug::log::error("failed to find the key (%x) when reading the device.", device.key);
@@ -37,7 +40,7 @@ namespace arduino {
                 break;
             }
 
-            device.tick_begin += TICK_INTERVAL;
+            device._tick_begin += TICK_INTERVAL;
         }
     }
 } // namespace arduino
