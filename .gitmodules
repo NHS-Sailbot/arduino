@@ -1,3 +1,0 @@
-[submodule "dep/serial"]
-	path = dep/serial
-	url = https://github.com/NHS-Sailbot/serial
