@@ -1,3 +1,3 @@
-# C++ arduino library
+# C++ Arduino library
 
-This repository standardizes communications between a host machine and an arduino, using [serial](https://github.com/NHS-Sailbot/serial). Further documentation can be found on [the wiki](https://github.com/NHS-Sailbot/arduino/wiki)
+This repository standardizes communications between a host machine and an Arduino, using [Serial](https://github.com/NHS-Sailbot/Serial). Further documentation can be found on [the wiki](https://github.com/NHS-Sailbot/Arduino/wiki)
