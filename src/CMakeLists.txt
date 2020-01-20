@@ -4,19 +4,17 @@ set(Headers
 set(Sources
     Arduino.cpp
 )
+
 if (WIN32)
-set(Sources ${Sources})
+    set(Sources ${Sources})
 elseif (APPLE)
-set(Sources ${Sources})
+    set(Sources ${Sources})
 elseif (UNIX)
-set(Sources ${Sources}
-    LinuxArduino.cpp
-)
+    set(Sources ${Sources}
+        LinuxArduino.cpp
+    )
 endif()
 
-add_library(${LibName} ${Sources} ${Headers})
-target_compile_features(${LibName} PRIVATE cxx_std_17)
-target_link_libraries(${LibName} PRIVATE Serial Debug)
-
-install(TARGETS ${LibName} DESTINATION lib)
-install(FILES ${Headers} DESTINATION include/Henry)
+add_library(Arduino ${Sources} ${Headers})
+target_compile_features(Arduino PUBLIC cxx_std_17)
+target_include_directories(Arduino PUBLIC ${CMAKE_CURRENT_LIST_DIR})
