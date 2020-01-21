@@ -1,7 +1,17 @@
 #include "Arduino.hpp"
 
+#include <chrono>
+
 namespace Henry {
 	static void defaultArduinoUpdate(Arduino &) {}
+
+	using namespace std::chrono;
+	static auto sGlobalStart = steady_clock::now();
+	static inline unsigned long long now() { return duration_cast<nanoseconds>(steady_clock::now() - sGlobalStart).count(); }
+	static inline void sleep(const unsigned long long ns) {
+		const auto tStartTime = now();
+		while (now() - tStartTime < ns) {}
+	}
 
 	Arduino::Arduino() :
 	mSerialDevice(), mTickBegin(0), mRsize(0), mTsize(0), mRdataBuffer(nullptr), mTdataBuffer(nullptr), mFlags(NONE),
@@ -38,11 +48,11 @@ namespace Henry {
 			if (mSerialDevice.open(tFilepath, baudrate)) {
 				for (unsigned int j = 0; j < HANDSHAKE_ATTEMPTS; ++j) {
 					mSerialDevice.writeBuffer(mTdataBuffer, mTsize);
-					// Debug::Timer::sleep(TICK_INTERVAL);
+					sleep(TICK_INTERVAL);
 					mSerialDevice.readBuffer(mRdataBuffer, mRsize);
-					// Debug::Timer::sleep(TICK_INTERVAL);
+					sleep(TICK_INTERVAL);
 					if (mRdataBuffer[0] == mKey && mRdataBuffer[mRsize - 1] == mKey) {
-						// mTickBegin = Debug::Timer::now();
+						mTickBegin = now();
 						mFlags |= CONNECTION_STATUS;
 						return;
 					}
@@ -65,7 +75,7 @@ namespace Henry {
 	}
 
 	void Arduino::update() {
-		const double tCurrentTime = 0; //Debug::Timer::now();
+		const auto tCurrentTime = now();
 		if (tCurrentTime - mTickBegin > TICK_INTERVAL) {
 			switch (mTick) {
 			case 0:

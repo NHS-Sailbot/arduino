@@ -11,7 +11,7 @@ namespace Henry {
 	struct Arduino {
 	  private:
 		static constexpr unsigned int TICKS_PER_SECOND = 100;
-		static constexpr double TICK_INTERVAL = 1.0 / TICKS_PER_SECOND;
+		static constexpr unsigned long long TICK_INTERVAL = 1000000000 / TICKS_PER_SECOND;
 		static constexpr unsigned int HANDSHAKE_ATTEMPTS = 10;
 		enum Flags {
 			NONE = 0,
@@ -21,7 +21,7 @@ namespace Henry {
 		};
 
 		SerialDevice mSerialDevice;
-		double mTickBegin;
+		unsigned long long mTickBegin;
 		unsigned int mRsize, mTsize;
 		unsigned char *mRdataBuffer, *mTdataBuffer;
 		unsigned short mFlags;
