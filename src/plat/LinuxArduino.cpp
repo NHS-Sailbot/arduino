@@ -1,4 +1,4 @@
-#include "Arduino.hpp"
+#include <Henry/Arduino.hpp>
 
 namespace Henry { namespace Platform {
 	unsigned int getDeviceCount() { return 20; }
